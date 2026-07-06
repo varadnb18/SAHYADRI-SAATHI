@@ -1,0 +1,36 @@
+extends baseEmail
+
+block content
+  h2 Guide Booking Confirmed! 🎫
+  p Hi #{firstName},
+  p Great news — your guide booking has been successfully paid and confirmed! Here are your trip details:
+  .highlight
+    table.detail-table
+      tr
+        td Destination
+        td #{placeName || tourName}
+      tr
+        td Verified Guide
+        td #{guideName}
+      tr
+        td Start Date
+        td #{new Date(startDate).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+      tr
+        td End Date
+        td #{new Date(endDate).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+      tr
+        td Travelers
+        td #{guests}
+      tr
+        td Total Price
+        td ₹#{totalPrice.toLocaleString('en-IN')}
+      tr
+        td Payment Status
+        td ✅ Paid & Secured
+      tr
+        td Booking ID
+        td #{bookingId}
+  p You can now communicate with your guide directly or view the meeting point in your dashboard.
+  a.btn(href=url) View My Bookings
+  p Have questions? Reply to this email or contact our support team.
+  p — The Sahyadri Saathi Team
