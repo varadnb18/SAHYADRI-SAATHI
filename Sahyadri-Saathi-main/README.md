@@ -51,6 +51,37 @@ Sahyadri Saathi connects travelers with verified local guides across the Western
 
 ---
 
+## 🏛️ Architecture & Data Flow
+
+```mermaid
+graph TD
+    Client((Client Browser\nTourist / Guide / Admin)) <-->|HTTP/REST APIs| Frontend(React 19 SPA)
+    Frontend <-->|JSON Payloads| Backend(Node.js / Express API)
+    
+    subgraph Core Backend
+        Backend <-->|Mongoose ODM| DB[(MongoDB)]
+        Backend <-->|Cache| Cache[(Redis)]
+        Backend -->|Image Processing| Sharp(Multer + Sharp)
+        Backend -->|Background Tasks| Cron(Node-Cron)
+    end
+    
+    subgraph External Services
+        Backend <-->|Checkout & Webhooks| Stripe(Stripe Payment Gateway)
+        Backend -->|Emails & Alerts| Email(SMTP / SendGrid)
+    end
+    
+    Sharp -->|Save Files| FS[Local File System]
+    Cron -.->|Scheduled Updates| DB
+```
+
+The system follows a typical robust MERN stack architecture with distinct separation of concerns:
+- **Client Tier**: React frontend handles user interactions, routing, and local state management.
+- **API Tier**: Node/Express backend provides RESTful endpoints, handles business logic (bookings, payouts), auth, and enforces security.
+- **Data Tier**: MongoDB stores documents (users, bookings, places, profiles) while Redis can optionally be used for caching.
+- **External Integrations**: Stripe handles secure payments and escrows, and Nodemailer handles automated emails.
+
+---
+
 ## 📁 Project Structure
 
 ```
